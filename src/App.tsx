@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import "./App.scss";
+import TodoList, { Todo } from "./components/TodoList";
+
+const App = () => {
+	const [todoList, setTodoList] = useState([
+		{ id: 0, title: "React Hook 0" },
+		{ id: 1, title: "React Hook 1" },
+		{ id: 2, title: "React Hook 2" },
+	]);
+
+	const handleTodoClick = (todo: Todo) => {
+		console.log(todo);
+		const index = todoList.findIndex((x: Todo) => x.id === todo.id);
+		if (index < 0) return;
+
+		const newTodoList = [...todoList];
+		newTodoList.splice(index, 1);
+		setTodoList(newTodoList);
+	};
+
+	const onSubmitForm = (formValues: any) => {
+		const newTodoList = [...todoList];
+		newTodoList.push({ id: newTodoList.length, ...formValues });
+		setTodoList(newTodoList);
+	};
+
+	return (
+		<div className="app">
+			<h1>Welcome to React Hooks - Todo List</h1>
+			<TodoList
+				todos={todoList}
+				onTodoClick={handleTodoClick}
+				onSubmitForm={onSubmitForm}
+			/>
+		</div>
+	);
+};
 
 export default App;
